@@ -1,0 +1,27 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: web-edit
+  namespace: web
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: web-edit-access
+subjects:
+- kind: User
+  name: "webdev@OTAPRD134ops.onmicrosoft.com"
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-view
+  namespace: api
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: api-view-access
+subjects:
+- kind: User
+  name: "webdev@OTAPRD134ops.onmicrosoft.com"
+  apiGroup: rbac.authorization.k8s.io

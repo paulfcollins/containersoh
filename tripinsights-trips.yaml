@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trips
+  namespace: api
+  labels:
+    api: trips
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trips
+  template:
+    metadata:
+      labels:
+        app: trips
+    spec:
+      containers:
+      - name: trips
+        image: registryhdw3309.azurecr.io/tripinsights/trips:1.0
+        env:
+        - name: SQL_USER
+          value: "sqladminhDw3309"
+        - name: SQL_PASSWORD
+          value: "mU7jz2Ja9"
+        - name: SQL_SERVER
+          value: "sqlserverhdw3309.database.windows.net"
+        - name: SQL_DBNAME
+          value: "mydrivingDB"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+          name: trips
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trips-backend
+  namespace: api
+spec:
+  ports:
+    - port: 8080
+      targetPort: 80
+  selector:
+    app: trips

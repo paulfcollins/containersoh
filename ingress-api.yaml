@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-api-rules
+  namespace: api
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: poi-backend
+          servicePort: 8080
+        path: /api/poi(/|$)(.*)
+      - backend:
+          serviceName: trips-backend
+          servicePort: 8080
+        path: /api/trips(/|$)(.*)
+      - backend:
+          serviceName: userprofile-backend
+          servicePort: 8080
+        path: /api/user(/|$)(.*)
+      - backend:
+          serviceName: user-java-backend
+          servicePort: 8080
+        path: /api/user-java(/|$)(.*)
+---

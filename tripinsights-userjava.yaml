@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-java
+  namespace: api
+  labels:
+    api: user-java
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-java
+  template:
+    metadata:
+      labels:
+        app: user-java
+    spec:
+      containers:
+      - name: trips
+        image: registryhdw3309.azurecr.io/tripinsights/user-java:latest
+        env:
+        - name: SQL_USER
+          value: "sqladminhDw3309"
+        - name: SQL_PASSWORD
+          value: "mU7jz2Ja9"
+        - name: SQL_SERVER
+          value: "sqlserverhdw3309.database.windows.net"
+        - name: SQL_DBNAME
+          value: "mydrivingDB"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+          name: user-java
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-java-backend
+  namespace: api
+spec:
+  ports:
+    - port: 8080
+      targetPort: 80
+  selector:
+    app: user-java
